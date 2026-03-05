@@ -48,6 +48,33 @@
           );
       };
 
+      packages = forEachSupportedSystem (
+        { pkgs }:
+        {
+          default = pkgs.rustPlatform.buildRustPackage {
+            pname = "prr";
+            version = "0.21.0";
+            src = ./.;
+            cargoLock.lockFile = ./Cargo.lock;
+
+            # Allow tests to load system certs like upstream Nixpkgs
+            checkInputs = [
+              pkgs.cacert
+            ];
+
+            env.SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+
+            buildInputs = [
+              pkgs.openssl
+            ];
+
+            nativeBuildInputs = [
+              pkgs.pkg-config
+            ];
+          };
+        }
+      );
+
       devShells = forEachSupportedSystem (
         { pkgs }:
         {
