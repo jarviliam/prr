@@ -87,7 +87,7 @@ fn prefix_lines(s: &str, prefix: &str) -> String {
 
     for line in s.lines() {
         if line.is_empty() {
-            ret += &(prefix.to_owned() + " \n");
+            ret += &(prefix.to_owned() + "\n");
         } else {
             // Appending to heap allocated string cannot fail
             writeln!(ret, "{} {}", prefix, line).expect("Failed to write to string");
